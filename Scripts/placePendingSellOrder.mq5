@@ -30,6 +30,7 @@ double entryPrice;               //entry price of pending buy order
 double stopLoss;                 //stop loss of pending buy order
 double takeProfit;               //take profit of pending buy order
 double spread=0.0;
+int ratesSize;                   //size of the rates array
 
 
 //+------------------------------------------------------------------+
@@ -41,9 +42,11 @@ void OnStart()
 
    MqlRates rates[];
    ArraySetAsSeries(rates,true);
+   
+   ratesSize = (entryBar >= stopLossBar) ? entryBar + 1: stopLossBar +1;
 
 //---Checking and Copying Prices into the Rates Object
-   if(CopyRates(_Symbol,_Period,0,stopLossBar+1,rates)==-1)
+   if(CopyRates(_Symbol,_Period,0,ratesSize,rates)==-1)
      {
       Print("Error Copying Price Data",GetLastError());
       return;
